@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { IUser } from './interfaces/user.interface';
+import { User } from './interfaces/user.interface';
 
 const USERS = [
   {
@@ -14,14 +14,14 @@ const USERS = [
 
 @Injectable()
 export class UsersService {
-  private readonly users: IUser[] = USERS;
+  private readonly users: User[] = USERS;
 
-  create(user: IUser) {
+  create(user: User) {
     this.users.push(user);
     return user;
   }
 
-  findAll(): IUser[] {
+  findAll(): User[] {
     return this.users;
   }
 }

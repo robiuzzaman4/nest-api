@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { IUser } from './interfaces/user.interface';
+import { User } from './interfaces/user.interface';
 import { CreateUserDto } from './dto/create-user.dto';
 
 @Controller('users')
@@ -14,7 +14,7 @@ export class UsersController {
 
   // get all users
   @Get()
-  findAll(): IUser[] {
+  findAll(): User[] {
     return this.usersService.findAll();
   }
 }
