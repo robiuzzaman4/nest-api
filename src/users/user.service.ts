@@ -2,6 +2,7 @@ import {
   Injectable,
   NotFoundException,
   ConflictException,
+  InternalServerErrorException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
@@ -30,22 +31,24 @@ export class UsersService {
 
   // Create a new user
   async create(createUserDto: CreateUserDto): Promise<User> {
-    const user_id = await this.generateUserId();
-    const newUser = new this.userModel({
-      ...createUserDto,
-      user_id,
-      dob: new Date(createUserDto.dob), // Convert DOB string to Date object
-    });
     try {
+      const user_id = await this.generateUserId();
+      const newUser = new this.userModel({
+        ...createUserDto,
+        user_id,
+        dob: new Date(createUserDto.dob),
+      });
       return await newUser.save();
     } catch (error) {
-      // Handle potential duplicate key errors (e.g., for phone number)
+      console.error('Error creating user:', error); // Log the full error object
       if (error.code === 11000) {
         throw new ConflictException(
           'User with this phone number already exists.',
         );
       }
-      throw error;
+      throw new InternalServerErrorException(
+        error.message || 'Failed to create user',
+      );
     }
   }
 

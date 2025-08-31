@@ -33,6 +33,8 @@ export class UsersController {
       };
     } catch (error) {
       if (error instanceof HttpException) {
+        console.log("error", error);
+        
         throw error;
       }
       throw new HttpException(
