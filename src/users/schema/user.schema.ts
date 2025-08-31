@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument } from 'mongoose';
 
-// Define the nested Address schema
+// === address schema ===
 @Schema({ _id: false })
 class Address {
   @Prop()
@@ -17,7 +17,7 @@ class Address {
   zila: string;
 }
 
-// Define the main User schema
+// === user schema ===
 @Schema({ timestamps: true })
 export class User {
   @Prop({ unique: true, required: true })

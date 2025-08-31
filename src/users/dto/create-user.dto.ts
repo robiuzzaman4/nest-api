@@ -1,12 +1,12 @@
 import { z } from 'zod';
 import { AddressSchema } from './address.dto';
 
-// Define the Zod schema for creating a new user.
+// === create user dto ===
 export const CreateUserSchema = z.object({
   full_name: z.string().min(1, 'Name is required!'),
   father_name: z.string(),
   mother_name: z.string(),
-  dob: z.string().pipe(z.coerce.date()), // Coerce a string to a Date object
+  dob: z.string().pipe(z.coerce.date()),
   phone: z.string().length(11, 'Phone number must be 11 digits long.'),
   present_address: AddressSchema,
   permanent_address: AddressSchema,

@@ -19,62 +19,62 @@ import { ZodValidationPipe } from 'src/pipes/zod-validation.pipe';
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  // Use the ZodValidationPipe to validate the request body against the schema.
+  // === create user ===
   @Post()
-  async create(
+  async createNewUser(
     @Body(new ZodValidationPipe(CreateUserSchema)) createUserDto: CreateUserDto,
   ) {
     try {
-      const user = await this.usersService.create(createUserDto);
+      const user = await this.usersService.createNewUser(createUserDto);
       return {
         statusCode: HttpStatus.CREATED,
-        message: 'User created successfully',
+        message: 'User created successfully.',
         data: user,
       };
     } catch (error) {
       if (error instanceof HttpException) {
-        console.log("error", error);
-        
         throw error;
       }
       throw new HttpException(
-        'Failed to create user',
+        'Failed to create user.',
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
   }
 
+  // === get all users ===
   @Get()
-  async findAll() {
-    const users = await this.usersService.findAll();
+  async getAllUsers() {
+    const users = await this.usersService.getAllUsers();
     return {
       statusCode: HttpStatus.OK,
-      message: 'Users retrieved successfully',
+      message: 'Users retrieved successfully.',
       data: users,
     };
   }
 
+  // === get single user ===
   @Get(':id')
-  async findOne(@Param('id') id: string) {
-    const user = await this.usersService.findOne(id);
+  async getSingleUser(@Param('id') id: string) {
+    const user = await this.usersService.getSingleUser(id);
     return {
       statusCode: HttpStatus.OK,
-      message: 'User retrieved successfully',
+      message: 'User retrieved successfully.',
       data: user,
     };
   }
 
-  // Use the ZodValidationPipe to validate the request body against the update schema.
+  // === update user ===
   @Patch(':id')
-  async update(
+  async updateUser(
     @Param('id') id: string,
     @Body(new ZodValidationPipe(UpdateUserSchema)) updateUserDto: UpdateUserDto,
   ) {
     try {
-      const updatedUser = await this.usersService.update(id, updateUserDto);
+      const updatedUser = await this.usersService.updateUser(id, updateUserDto);
       return {
         statusCode: HttpStatus.OK,
-        message: 'User updated successfully',
+        message: 'User updated successfully.',
         data: updatedUser,
       };
     } catch (error) {
@@ -82,18 +82,19 @@ export class UsersController {
         throw error;
       }
       throw new HttpException(
-        'Failed to update user',
+        'Failed to update user.',
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
   }
 
+  // === delete user [soft] ===
   @Delete(':id')
-  async remove(@Param('id') id: string) {
-    const deletedUser = await this.usersService.remove(id);
+  async deleteUser(@Param('id') id: string) {
+    const deletedUser = await this.usersService.deleteUser(id);
     return {
       statusCode: HttpStatus.OK,
-      message: 'User deleted successfully',
+      message: 'User deleted successfully.',
       data: deletedUser,
     };
   }

@@ -6,8 +6,6 @@ import { UsersService } from './user.service';
 
 @Module({
   imports: [
-    // Register the User schema with MongooseModule for this feature.
-    // This makes the User model available for dependency injection in the service.
     MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
   ],
   controllers: [UsersController],

@@ -5,12 +5,12 @@ import { UsersModule } from './users/user.module';
 
 @Module({
   imports: [
-    // Configure dotenv to load environment variables
+    // === configure .env to load env variables ===
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: '.env',
     }),
-    // Connect to MongoDB using the URI from environment variables
+    // === connect mongodb database ===
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
