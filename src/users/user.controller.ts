@@ -53,10 +53,10 @@ export class UsersController {
     };
   }
 
-  // === get single user ===
+  // === get user by id ===
   @Get(':id')
-  async getSingleUser(@Param('id') id: string) {
-    const user = await this.usersService.getSingleUser(id);
+  async getUserById(@Param('id') id: string) {
+    const user = await this.usersService.getUserById(id);
     return {
       statusCode: HttpStatus.OK,
       message: 'User retrieved successfully.',

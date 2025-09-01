@@ -1,10 +1,10 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { HydratedDocument } from 'mongoose';
+import { Document, Types, Model } from 'mongoose';
 
-// === address schema ===
-@Schema({ _id: false })
-class Address {
-  @Prop()
+// === user address schema ===
+@Schema()
+export class Address {
+  @Prop({ required: true })
   house_number: string;
 
   @Prop({ required: true })
@@ -18,9 +18,11 @@ class Address {
 }
 
 // === user schema ===
-@Schema({ timestamps: true })
+@Schema()
 export class User {
-  @Prop({ unique: true, required: true })
+  // _id: Types.ObjectId;
+
+  @Prop({ required: true, unique: true })
   user_id: string;
 
   @Prop({ required: true })
@@ -32,25 +34,25 @@ export class User {
   @Prop({ required: true })
   mother_name: string;
 
-  @Prop({ required: true })
+  @Prop({ required: true, type: Date })
   dob: Date;
 
-  @Prop({ required: true, unique: true, match: /^\d{11}$/ })
+  @Prop({ required: true, unique: true })
   phone: string;
 
-  @Prop({ required: true, select: false })
-  password: string;
+  @Prop({ required: true, select: false }) // Password is not returned by default
+  password?: string;
 
-  @Prop({ type: Address, required: true })
+  @Prop({ required: true, type: Address })
   present_address: Address;
 
-  @Prop({ type: Address, required: true })
+  @Prop({ required: true, type: Address })
   permanent_address: Address;
 
-  @Prop({ default: true })
+  @Prop({ required: true, default: true })
   is_active: boolean;
 
-  @Prop({ default: false })
+  @Prop({ required: true, default: false })
   is_deleted: boolean;
 
   @Prop({
@@ -61,5 +63,6 @@ export class User {
   role: 'user' | 'admin' | 'super_admin';
 }
 
-export type UserDocument = HydratedDocument<User>;
+export type UserDocument = User & Document;
+export type UserModel = Model<UserDocument>;
 export const UserSchema = SchemaFactory.createForClass(User);

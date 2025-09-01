@@ -56,12 +56,32 @@ export class UsersService {
     return this.userModel.find();
   }
 
-  // === get sinlge user ===
-  async getSingleUser(id: string) {
+  // === get user by id ===
+  async getUserById(id: string) {
     const user = await this.userModel.findById(id);
     if (!user) {
       throw new NotFoundException(`User with ID ${id} not found.`);
     }
+    return user;
+  }
+
+  // === get user by phone [ONLY USED FOR INTERNAL BACKEND CALL - AUTH] ===
+  async getUserByPhone(phone: string) {
+    const user = await this.userModel
+      .findOne({ phone })
+      .select('+password')
+      .exec();
+    return user;
+  }
+
+  // === is user active [ONLY USED FOR INTERNAL BACKEND CALL - AUTH] ===
+  async isUserActive(id: string) {
+    const user = await this.userModel.findOne({ _id: id, is_active: true });
+    return user;
+  }
+  // === is user deleted [ONLY USED FOR INTERNAL BACKEND CALL - AUTH] ===
+  async isUserDeleted(id: string) {
+    const user = await this.userModel.findOne({ _id: id, is_deleted: true });
     return user;
   }
 
