@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-
+import * as bcrypt from 'bcrypt';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User, UserDocument } from './schema/user.schema';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -30,20 +30,23 @@ export class UsersService {
   async createNewUser(createUserDto: CreateUserDto) {
     try {
       const user_id = await this.generateUserId();
+      const hashedPassword = await bcrypt.hash(createUserDto.password, 10);
       const newUser = new this.userModel({
         ...createUserDto,
         user_id,
+        password: hashedPassword,
         dob: new Date(createUserDto.dob),
       });
       return await newUser.save();
     } catch (error) {
+      console.error('Error creating user:', error);
       if (error.code === 11000) {
         throw new ConflictException(
-          'User with this phone number already exists.',
+          'User with this phone number or user ID already exists.',
         );
       }
       throw new InternalServerErrorException(
-        error.message || 'Failed to create user.',
+        error.message || 'Failed to create user',
       );
     }
   }

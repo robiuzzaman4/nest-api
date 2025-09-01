@@ -3,11 +3,12 @@ import { AddressSchema } from './address.dto';
 
 // === create user dto ===
 export const CreateUserSchema = z.object({
-  full_name: z.string().min(1, 'Name is required!'),
-  father_name: z.string(),
-  mother_name: z.string(),
+  full_name: z.string().min(1, 'Name is required.'),
+  father_name: z.string().min(1, 'Father name is required.'),
+  mother_name: z.string().min(1, 'Mother name is required.'),
   dob: z.string().pipe(z.coerce.date()),
   phone: z.string().length(11, 'Phone number must be 11 digits long.'),
+  password: z.string().min(6, 'Password must be at least 6 characters long.'),
   present_address: AddressSchema,
   permanent_address: AddressSchema,
   is_active: z.boolean().default(true).optional(),

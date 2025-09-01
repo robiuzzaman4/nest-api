@@ -38,6 +38,9 @@ export class User {
   @Prop({ required: true, unique: true, match: /^\d{11}$/ })
   phone: string;
 
+  @Prop({ required: true, select: false })
+  password: string;
+
   @Prop({ type: Address, required: true })
   present_address: Address;
 
@@ -50,7 +53,11 @@ export class User {
   @Prop({ default: false })
   is_deleted: boolean;
 
-  @Prop({ required: true, enum: ['user', 'admin', 'super_admin'] })
+  @Prop({
+    required: true,
+    enum: ['user', 'admin', 'super_admin'],
+    default: 'user',
+  })
   role: 'user' | 'admin' | 'super_admin';
 }
 
